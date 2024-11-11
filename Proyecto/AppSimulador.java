@@ -159,7 +159,7 @@ public class AppSimulador{
                 if (procesos[j].getPrioridad() > procesos[mayor].getPrioridad()) {
                     mayor = j;
                 }
-            }
+            }//grgrg
 
             Proceso temp = procesos[i];
 			procesos[i] = procesos[mayor];
