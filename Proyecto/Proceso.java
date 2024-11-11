@@ -5,16 +5,18 @@ public class Proceso {
 	private int tiempoRestante;
 	private int estadoActual;
 	private int prioridad;
+	private int ID;
 	
 	public Proceso (){
 		
 	}
 	
-	public Proceso (int tiempoRestante, int estadoActual, int prioridad){
+	public Proceso (int tiempoRestante, int estadoActual, int prioridad, int ID){
 
 		this.tiempoRestante=tiempoRestante;
 		this.estadoActual=estadoActual;
 		this.prioridad=prioridad;
+		this.ID=ID;
 		
 	}
 
@@ -42,9 +44,17 @@ public class Proceso {
 		this.prioridad = prioridad;
 	}
 
+	public int getID() {
+		return ID;
+	}
+
+	public void setID(int ID) {
+		this.ID = ID;
+	}
+
 	@Override
 	public String toString() {
-		return "Proceso [tiempoRestante=" + tiempoRestante + ", estadoActual=" + estadoActual + ", prioridad="
+		return "Proceso "+ID+"[tiempoRestante=" + tiempoRestante + ", estadoActual=" + estadoActual + ", prioridad="
 				+ prioridad + "]";
 	}
 
