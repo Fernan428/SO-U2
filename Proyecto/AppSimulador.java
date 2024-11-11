@@ -224,14 +224,14 @@ public static void ProcesoNoApropiativoGeneral(Proceso[] procesos, int quantum, 
         	}
     	}
 
-    Proceso temp = procesos[i];
-    procesos[i] = procesos[menor];
-    procesos[menor] = temp;
-}
+		Proceso temp = procesos[i];
+		procesos[i] = procesos[menor];
+		procesos[menor] = temp;
+		}
 
-System.out.println();
+		System.out.println();
 
-ProcesoApropiativoGeneral(procesos, quantum, tiempoMonitoreoCPU);
+		ProcesoApropiativoGeneral(procesos, quantum, tiempoMonitoreoCPU);
 
 	
 	}
@@ -289,8 +289,14 @@ ProcesoApropiativoGeneral(procesos, quantum, tiempoMonitoreoCPU);
 					}
 
 					if (tiempoMonitoreoCPU < tiempoNecesario) {
-						System.out.println("No hay suficiente tiempo de monitoreo para ejecutar el proceso " + procesos[i].getID() +"\n"+"Fin de la simulacion");
-						return; 
+
+						if(tiempoMonitoreoCPU == 0)
+						{
+							System.out.println("No hay suficiente tiempo de monitoreo para ejecutar el proceso " + procesos[i].getID() +"\n"+"Fin de la simulacion");
+						return;
+						}else{
+							tiempoNecesario = tiempoMonitoreoCPU;
+						} 
 					}
 	
 					switch (procesos[i].getEstadoActual()) {
@@ -319,8 +325,8 @@ ProcesoApropiativoGeneral(procesos, quantum, tiempoMonitoreoCPU);
 							break;
 						
 						case 3: 
-						int nuevoEstado = (int) (Math.random() * 2) + 1;
-						if (nuevoEstado == 2) {
+						int nuevoEstado = (int) (Math.random()*2);
+						if (nuevoEstado == 1) {
 							procesos[i].setEstadoActual(2); 
 							
 							procesos[i].setTiempoRestante(procesos[i].getTiempoRestante() - tiempoNecesario);
