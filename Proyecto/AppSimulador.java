@@ -64,8 +64,7 @@ public class AppSimulador {
 
         for (int i = 0; i < procesosEjecucion; i++) {
 
-            procesos[i] = new Proceso((tiempoRestante = (int) (Math.random() * 8) + 3),
-                    (estadoActual = (int) (Math.random() * 3) + 1), ((int) (Math.random() * 4) + 1), i + 1, false);
+            procesos[i] = new Proceso((tiempoRestante = (int) (Math.random() * 8) + 3),(estadoActual = (int) (Math.random() * 3) + 1), ((int) (Math.random() * 4) + 1), i + 1, false, 2);
             System.out.println("|" + "\t" + "    " + (i + 1) + "\t" + "\t" + "\t" + procesos[i].getTiempoRestante()
                     + "\t" + "\t" + "     " + procesos[i].getEstadoActual() + "\t" + "\t" + "    "
                     + procesos[i].getPrioridad() + "       |");
@@ -551,7 +550,7 @@ public class AppSimulador {
 
         existe = false;
         for (int i = 0; i < procesos.length; i++) {
-            if (!procesos[i].getEntra()) {
+            if (!procesos[i].isEntra()) {
                 existe = true;
                 System.out.print(" " + procesos[i].getID());
             }
@@ -564,7 +563,7 @@ public class AppSimulador {
         existe = false;
 
         for (int i = 0; i < procesos.length; i++) {
-            if (procesos[i].getEntra() && procesos[i].getTiempoRestante() != 0) {
+            if (procesos[i].isEntra() && procesos[i].getTiempoRestante() != 0) {
                 existe = true;
                 System.out.print(" " + procesos[i].getID());
             }
@@ -573,7 +572,7 @@ public class AppSimulador {
             System.out.print(" Ninguno");
 
         System.out.print("\n" + "Cantidad de cambios de procesos: ");
-        System.out.print(totalEjecutado);
+        System.out.println(totalEjecutado);
 
     }
 }

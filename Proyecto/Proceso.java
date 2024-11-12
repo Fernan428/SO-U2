@@ -7,18 +7,20 @@ public class Proceso {
 	private int prioridad;
 	private int ID;
 	private boolean entra;
+	private int usuario;
 	
 	public Proceso (){
 		
 	}
 	
-	public Proceso (int tiempoRestante, int estadoActual, int prioridad, int ID,boolean entra){
+	public Proceso (int tiempoRestante, int estadoActual, int prioridad, int ID,boolean entra, int usuario){
 
 		this.tiempoRestante=tiempoRestante;
 		this.estadoActual=estadoActual;
 		this.prioridad=prioridad;
 		this.ID=ID;
 		this.entra=entra;
+		this.usuario=usuario;
 		
 	}
 
@@ -54,7 +56,7 @@ public class Proceso {
 		this.ID = ID;
 	}
 
-	public boolean getEntra() {
+	public boolean isEntra() {
 		return entra;
 	}
 
@@ -62,10 +64,20 @@ public class Proceso {
 		this.entra = entra;
 	}
 
+	public int getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(int usuario) {
+		this.usuario = usuario;
+	}
+
 	@Override
 	public String toString() {
 		return "Proceso "+ID+"[tiempoRestante=" + tiempoRestante + ", estadoActual=" + estadoActual + ", prioridad="
 				+ prioridad + "]";
 	}
+
+	
 	
 }
