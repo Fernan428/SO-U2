@@ -116,11 +116,11 @@ public class AppSimulador{
 					break;
 
 				case 3:
-				MúltiplesColasPrioridadNoApropiativo();
+				MúltiplesColasPrioridadNoApropiativo(procesos, tiempoMonitoreoCPU);
 					break;
 
 				case 4:
-				ProcesoMasCortoPrimeroNoApropiativo();
+				ProcesoMasCortoPrimeroNoApropiativo(procesos, tiempoMonitoreoCPU);
 					break;
 
 				case 5:
@@ -203,85 +203,7 @@ public class AppSimulador{
 
 	}
 
-public static void ProcesoNoApropiativoGeneral(Proceso[] procesos, int tiempoMonitoreoCPU) {
-		boolean ProcesosPendientes;
-		int tiempoNecesario;
 
-		do {
-			ProcesosPendientes = false;
-
-			for (int i = 0; i < procesos.length; i++) {
-				if (procesos[i] != null && procesos[i].getTiempoRestante() > 0) {
-					ProcesosPendientes = true;
-
-						tiempoNecesario = procesos[i].getTiempoRestante();
-
-					if (tiempoMonitoreoCPU < tiempoNecesario) {
-
-						if(tiempoMonitoreoCPU == 0)
-						{
-							System.out.println("No hay suficiente tiempo de monitoreo para ejecutar el proceso " + procesos[i].getID() +"\n"+"Fin de la simulacion");
-						return;
-						}else{
-							tiempoNecesario = tiempoMonitoreoCPU;
-						} 
-					}
-
-					switch (procesos[i].getEstadoActual()) {
-						case 1: 
-							procesos[i].setTiempoRestante(procesos[i].getTiempoRestante() - tiempoNecesario);
-							tiempoMonitoreoCPU -= tiempoNecesario; 
-							if (procesos[i].getTiempoRestante() == 0) {
-							System.out.println("Entra Proceso " + procesos[i].getID() + ", se ejecuta y termina");
-							procesos[i] = null; 
-							}else{
-							System.out.println("Entra Proceso " + procesos[i].getID() + ", se ejecuta");
-							}
-								break;
-						
-						case 2: 
-						procesos[i].setEstadoActual(1);
-
-						procesos[i].setTiempoRestante(procesos[i].getTiempoRestante() - tiempoNecesario);
-						tiempoMonitoreoCPU -= tiempoNecesario; 
-						if (procesos[i].getTiempoRestante() == 0) {
-							System.out.println("Entra Proceso " + procesos[i].getID() + ", se ejecuta y termina");
-							procesos[i] = null; 
-						}else{
-							System.out.println("Entra Proceso " + procesos[i].getID() + ", se ejecuta");
-						}
-							break;
-						
-						case 3: 
-						int nuevoEstado = (int) (Math.random()*2);
-						if (nuevoEstado == 1) {
-							procesos[i].setEstadoActual(2); 
-							
-							procesos[i].setTiempoRestante(procesos[i].getTiempoRestante() - tiempoNecesario);
-							tiempoMonitoreoCPU -= tiempoNecesario; 
-							if (procesos[i].getTiempoRestante() == 0) {
-								System.out.println("Entra Proceso " + procesos[i].getID() + ", se ejecuta y termina");
-								procesos[i] = null; 
-							}else{
-								System.out.println("Entra Proceso " + procesos[i].getID() + ", se ejecuta");
-							}
-						} else {
-							System.out.println("Entra Proceso "+procesos[i].getID()+", no se ejecuta porque sigue bloqueado");
-							continue; 
-						}
-							break;
-					}
-
-				}
-
-				if (procesos[i] != null){
-					i -= 1; 
-				}
-				
-			}
-
-		} while (ProcesosPendientes && tiempoMonitoreoCPU > 0);
-	}
 	public static void MúltiplesColasPrioridadApropiativo (Proceso [] procesos, int quantum, int tiempoMonitoreoCPU){
 
 		int n = procesos.length;
@@ -306,8 +228,27 @@ public static void ProcesoNoApropiativoGeneral(Proceso[] procesos, int tiempoMon
 
 	}
 
-	public static void MúltiplesColasPrioridadNoApropiativo (){
+	public static void MúltiplesColasPrioridadNoApropiativo (Proceso [] procesos, int tiempoMonitoreoCPU){
 
+		int n = procesos.length;
+
+        for (int i = 0; i < n - 1; i++) {
+            int mayor = i;
+
+            for (int j = i + 1; j < n; j++) {
+                if (procesos[j].getPrioridad() > procesos[mayor].getPrioridad()) {
+                    mayor = j;
+                }
+            }
+
+            Proceso temp = procesos[i];
+			procesos[i] = procesos[mayor];
+			procesos[mayor] = temp;
+        }
+
+		System.out.println();
+
+		ProcesoNoApropiativoGeneral(procesos, tiempoMonitoreoCPU);
 
 	}
 
@@ -336,7 +277,27 @@ public static void ProcesoNoApropiativoGeneral(Proceso[] procesos, int tiempoMon
 	
 	}
 
-	public static void ProcesoMasCortoPrimeroNoApropiativo (){
+	public static void ProcesoMasCortoPrimeroNoApropiativo (Proceso [] procesos, int tiempoMonitoreoCPU){
+
+		int n = procesos.length;
+
+		for (int i = 0; i < n - 1; i++) {
+    		int menor = i;
+
+    		for (int j = i + 1; j < n; j++) {
+        		if (procesos[j].getTiempoRestante() < procesos[menor].getTiempoRestante()) {
+           	 	menor = j;
+        	}
+    	}
+
+		Proceso temp = procesos[i];
+		procesos[i] = procesos[menor];
+		procesos[menor] = temp;
+		}
+
+		System.out.println();
+
+		ProcesoNoApropiativoGeneral(procesos, tiempoMonitoreoCPU);
 
 
 	}
@@ -452,6 +413,86 @@ public static void ProcesoNoApropiativoGeneral(Proceso[] procesos, int tiempoMon
 				
 			}
 	
+		} while (ProcesosPendientes && tiempoMonitoreoCPU > 0);
+	}
+
+	public static void ProcesoNoApropiativoGeneral(Proceso[] procesos, int tiempoMonitoreoCPU) {
+		boolean ProcesosPendientes;
+		int tiempoNecesario;
+
+		do {
+			ProcesosPendientes = false;
+
+			for (int i = 0; i < procesos.length; i++) {
+				if (procesos[i] != null && procesos[i].getTiempoRestante() > 0) {
+					ProcesosPendientes = true;
+
+						tiempoNecesario = procesos[i].getTiempoRestante();
+
+					if (tiempoMonitoreoCPU < tiempoNecesario) {
+
+						if(tiempoMonitoreoCPU == 0)
+						{
+							System.out.println("No hay suficiente tiempo de monitoreo para ejecutar/terminar el proceso " + procesos[i].getID() +"\n"+"Fin de la simulacion");
+						return;
+						}else{
+							tiempoNecesario = tiempoMonitoreoCPU;
+						} 
+					}
+
+					switch (procesos[i].getEstadoActual()) {
+						case 1: 
+							procesos[i].setTiempoRestante(procesos[i].getTiempoRestante() - tiempoNecesario);
+							tiempoMonitoreoCPU -= tiempoNecesario; 
+							if (procesos[i].getTiempoRestante() == 0) {
+							System.out.println("Entra Proceso " + procesos[i].getID() + ", se ejecuta y termina");
+							procesos[i] = null; 
+							}else{
+							System.out.println("Entra Proceso " + procesos[i].getID() + ", se ejecuta");
+							}
+								break;
+						
+						case 2: 
+						procesos[i].setEstadoActual(1);
+
+						procesos[i].setTiempoRestante(procesos[i].getTiempoRestante() - tiempoNecesario);
+						tiempoMonitoreoCPU -= tiempoNecesario; 
+						if (procesos[i].getTiempoRestante() == 0) {
+							System.out.println("Entra Proceso " + procesos[i].getID() + ", se ejecuta y termina");
+							procesos[i] = null; 
+						}else{
+							System.out.println("Entra Proceso " + procesos[i].getID() + ", se ejecuta");
+						}
+							break;
+						
+						case 3: 
+						int nuevoEstado = (int) (Math.random()*2);
+						if (nuevoEstado == 1) {
+							procesos[i].setEstadoActual(2); 
+							
+							procesos[i].setTiempoRestante(procesos[i].getTiempoRestante() - tiempoNecesario);
+							tiempoMonitoreoCPU -= tiempoNecesario; 
+							if (procesos[i].getTiempoRestante() == 0) {
+								System.out.println("Entra Proceso " + procesos[i].getID() + ", se ejecuta y termina");
+								procesos[i] = null; 
+							}else{
+								System.out.println("Entra Proceso " + procesos[i].getID() + ", se ejecuta");
+							}
+						} else {
+							System.out.println("Entra Proceso "+procesos[i].getID()+", no se ejecuta porque sigue bloqueado");
+							continue; 
+						}
+							break;
+					}
+
+				}
+
+				if (procesos[i] != null){
+					i -= 1; 
+				}
+				
+			}
+
 		} while (ProcesosPendientes && tiempoMonitoreoCPU > 0);
 	}
 
