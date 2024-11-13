@@ -1,5 +1,4 @@
 package Proyecto;
-
 import java.util.*;
 
 public class AppSimulador {
@@ -8,7 +7,7 @@ public class AppSimulador {
 
         Scanner sc = new Scanner(System.in);
 
-        int tiempoRestante = 0;
+        double tiempoRestante = 0;
         int estadoActual = 0;
         int prioridad = 0;
         int quantum = 0;
@@ -70,7 +69,7 @@ public class AppSimulador {
 
         for (int i = 0; i < procesosEjecucion; i++) {
 
-            procesos[i] = new Proceso((tiempoRestante = (int) (Math.random() * 8) + 3),
+            procesos[i] = new Proceso((tiempoRestante = (double) (Math.random() * 8) + 3),
                     (estadoActual = (int) (Math.random() * 3) + 1), ((int) (Math.random() * 4) + 1), i + 1, false,
                     (int) (Math.random() * usuariosActivos) + 1);
             System.out.printf("| %5d %18d %20d %12d %10d     |%n", procesos[i].getID(), procesos[i].getTiempoRestante(),
@@ -92,7 +91,7 @@ public class AppSimulador {
                     break;
 
                 case 3:
-                    MúltiplesColasPrioridadApropiativo(procesos, quantum, tiempoMonitoreoCPU);
+                    MultiplesColasPrioridadApropiativo(procesos, quantum, tiempoMonitoreoCPU);
                     break;
 
                 case 4:
@@ -127,7 +126,7 @@ public class AppSimulador {
                     break;
 
                 case 3:
-                    MúltiplesColasPrioridadNoApropiativo(procesos, tiempoMonitoreoCPU);
+                    MultiplesColasPrioridadNoApropiativo(procesos, tiempoMonitoreoCPU);
                     break;
 
                 case 4:
@@ -157,7 +156,7 @@ public class AppSimulador {
     public static void RoundRobinApropiativo(Proceso[] procesos, int tiempoMonitoreoCPU, int quantum) {
 
         boolean ProcesosPendientes;
-        int tiempoNecesario;
+        double tiempoNecesario;
         int totalEjecutado = 0;
         boolean salir = false;
         int inanicion = 0;
@@ -178,7 +177,7 @@ public class AppSimulador {
                     if (tiempoMonitoreoCPU < tiempoNecesario) {
 
                         if (tiempoMonitoreoCPU == 0) {
-                            System.out.println("Tiempo de simulacion terminado");
+                            System.out.println("Tiempo de simulación terminado");
                             salir = true;
                             break;
                         } else {
@@ -233,7 +232,7 @@ public class AppSimulador {
                                 inanicion++;
                                 if(inanicion >= 5) {
                                     salir = true;
-                                    System.out.println("La simulación murió de inanicion");
+                                    System.out.println("La simulación murió de inanición");
                                     break;
                                 }
                                 continue;
@@ -255,7 +254,7 @@ public class AppSimulador {
     public static void RoundRobinNoApropiativo(Proceso[] procesos, int tiempoMonitoreoCPU) {
 
         boolean ProcesosPendientes;
-        int tiempoNecesario;
+        double tiempoNecesario;
         int totalEjecutado = 0;
         boolean salir = false;
         int inanicion = 0;
@@ -272,7 +271,7 @@ public class AppSimulador {
                     if (tiempoMonitoreoCPU < tiempoNecesario) {
 
                         if (tiempoMonitoreoCPU == 0) {
-                            System.out.println("Se termino el tiempo de monitoreo del CPU ");
+                            System.out.println("Tiempo de simulación terminado");
                             salir = true;
                             break;
                         } else {
@@ -327,7 +326,7 @@ public class AppSimulador {
                                 inanicion++;
                                 if(inanicion >= 5) {
                                     salir = true;
-                                    System.out.println("La simulación murió de inanicion");
+                                    System.out.println("La simulación murió de inanición");
                                     break;
                                 }
                                 continue;
@@ -343,23 +342,8 @@ public class AppSimulador {
 
         } while (ProcesosPendientes && tiempoMonitoreoCPU > 0);
 
-        System.out.println("+---------------------------------------------------------------------------+");
-        System.out.println("|                   Tabla de control de procesos (PCB)                      |");
-        System.out.println("+---------------------------------------------------------------------------+");
-        System.out.println("|" + "\t" + "Procesos en" + "\t" + "Tiempo restante  " + "\t" + "Estado actual" + "\t"
-                + "Prioridad" + "   |");
-        System.out.println(
-                "|" + "\t" + " ejecución " + "\t  " + "de ejecución                                   " + "   |");
-        System.out.println("+---------------------------------------------------------------------------+");
+        ImprimirPCB(procesos);
 
-        for (int i = 0; i < procesos.length; i++) {
-
-            System.out.println(
-                    "|" + "\t" + "    " + procesos[i].getID() + "\t" + "\t" + "\t" + procesos[i].getTiempoRestante()
-                            + "\t" + "\t" + "     " + procesos[i].getEstadoActual() + "\t" + "\t" + "    "
-                            + procesos[i].getPrioridad() + "       |");
-
-        }
         System.out.println("+---------------------------------------------------------------------------+");
 
         InformeFinal(procesos, totalEjecutado);
@@ -414,7 +398,7 @@ public class AppSimulador {
 
     }
 
-    public static void MúltiplesColasPrioridadApropiativo(Proceso[] procesos, int quantum, int tiempoMonitoreoCPU) {
+    public static void MultiplesColasPrioridadApropiativo(Proceso[] procesos, int quantum, int tiempoMonitoreoCPU) {
 
         int n = procesos.length;
 
@@ -438,7 +422,7 @@ public class AppSimulador {
 
     }
 
-    public static void MúltiplesColasPrioridadNoApropiativo(Proceso[] procesos, int tiempoMonitoreoCPU) {
+    public static void MultiplesColasPrioridadNoApropiativo(Proceso[] procesos, int tiempoMonitoreoCPU) {
 
         int n = procesos.length;
 
@@ -535,8 +519,7 @@ public class AppSimulador {
                     if (tiempoMonitoreoCPU < tiempoNecesario) {
 
                         if (tiempoMonitoreoCPU == 0) {
-                            System.out.println("No hay suficiente tiempo de monitoreo para ejecutar el proceso "
-                                    + procesos[i].getID() + "\n" + "Fin de la simulacion");
+                            System.out.println("Tiempo de simulación terminado");
                             salir = true;
                             break;
                         } else {
@@ -591,7 +574,7 @@ public class AppSimulador {
                                 inanicion++;
                                 if(inanicion >= 5) {
                                     salir = true;
-                                    System.out.println("La simulación murió de inanicion");
+                                    System.out.println("La simulación murió de inanición");
                                     break;
                                 }
                                 continue;
@@ -614,7 +597,7 @@ public class AppSimulador {
     public static void PlanificacionGarantizadaNoApropiativo(Proceso[] procesos, int tiempoMonitoreoCPU) {
 
         boolean ProcesosPendientes;
-        int tiempoNecesario;
+        double tiempoNecesario;
         int totalEjecutado = 0;
         boolean salir = false;
 
@@ -630,7 +613,7 @@ public class AppSimulador {
                     if (tiempoMonitoreoCPU < tiempoNecesario) {
 
                         if (tiempoMonitoreoCPU == 0) {
-                            System.out.println("Se termino el tiempo de monitoreo del CPU ");
+                            System.out.println("Tiempo de simulación terminado");
                             salir = true;
                             break;
                         } else {
@@ -682,6 +665,12 @@ public class AppSimulador {
                                 System.out.println("Entra Proceso " + procesos[i].getID()
                                         + ", no se ejecuta porque sigue bloqueado");
                                 totalEjecutado++;
+                                inanicion++;
+                                if(inanicion >= 5) {
+                                    salir = true;
+                                    System.out.println("La simulación murió de inanición");
+                                    break;
+                                }
                                 continue;
                             }
                             break;
@@ -695,23 +684,8 @@ public class AppSimulador {
 
         } while (ProcesosPendientes && tiempoMonitoreoCPU > 0);
 
-        System.out.println("+---------------------------------------------------------------------------+");
-        System.out.println("|                   Tabla de control de procesos (PCB)                      |");
-        System.out.println("+---------------------------------------------------------------------------+");
-        System.out.println("|" + "\t" + "Procesos en" + "\t" + "Tiempo restante  " + "\t" + "Estado actual" + "\t"
-                + "Prioridad" + "   |");
-        System.out.println(
-                "|" + "\t" + " ejecución " + "\t  " + "de ejecución                                   " + "   |");
-        System.out.println("+---------------------------------------------------------------------------+");
+        ImprimirPCB(procesos);
 
-        for (int i = 0; i < procesos.length; i++) {
-
-            System.out.println(
-                    "|" + "\t" + "    " + procesos[i].getID() + "\t" + "\t" + "\t" + procesos[i].getTiempoRestante()
-                            + "\t" + "\t" + "     " + procesos[i].getEstadoActual() + "\t" + "\t" + "    "
-                            + procesos[i].getPrioridad() + "       |");
-
-        }
         System.out.println("+---------------------------------------------------------------------------+");
 
         InformeFinal(procesos, totalEjecutado);
@@ -788,8 +762,7 @@ public class AppSimulador {
                 tiempoRest = 0;
             }
         }
-        mostrarInformeProcesos(procesos, cantCambios, contUnidades, tiempoMonitoreoCPU);
-
+        InformeFinal(procesos, totalEjecutado);
     }
 
     public static void BoletosLoteriaNoApropiativo(Proceso[] procesos, int tiempoMonitoreoCPU) {
@@ -862,7 +835,7 @@ public class AppSimulador {
                 tiempoRestanteCPU = 0;
             }
         }
-        mostrarInformeProcesos(procesos, cantCambios, contUnidades, tiempoMonitoreoCPU);
+        InformeFinal(procesos, totalEjecutado);
 
     }
 
@@ -967,8 +940,8 @@ public class AppSimulador {
                     }
                 }
             }
-        }
-        mostrarInformeProcesos(procesos, cantCambios, contUnidades, tiempoMonitoreoCPU);
+        } 
+        InformeFinal(procesos, totalEjecutado);
 
     }
 
@@ -1075,13 +1048,13 @@ public class AppSimulador {
             }
         }
         System.out.println("Salió del ciclo");
-        mostrarInformeProcesos(procesos, cantCambios, contUnidades, tiempoMonitoreoCPU);
 
+        InformeFinal(procesos, totalEjecutado);
     }
 
     public static void ProcesoApropiativoGeneral(Proceso[] procesos, int quantum, int tiempoMonitoreoCPU) {
         boolean ProcesosPendientes;
-        int tiempoNecesario;
+        double tiempoNecesario;
         int totalEjecutado = 0;
         boolean salir = false;
         int inanicion = 0;
@@ -1102,8 +1075,7 @@ public class AppSimulador {
                     if (tiempoMonitoreoCPU < tiempoNecesario) {
 
                         if (tiempoMonitoreoCPU == 0) {
-                            System.out.println("No hay suficiente tiempo de monitoreo para ejecutar el proceso "
-                                    + procesos[i].getID() + "\n" + "Fin de la simulacion");
+                            System.out.println("Tiempo de simulación terminado");
                             salir = true;
                             break;
                         } else {
@@ -1151,16 +1123,16 @@ public class AppSimulador {
                                     System.out.println("Entra Proceso " + procesos[i].getID() + ", se ejecuta");
                                 }
                                 totalEjecutado++;
-                                inanicion++;
-                                if(inanicion >= 5) {
-                                    salir = true;
-                                    System.out.println("La simulación murió de inanicion");
-                                    break;
-                                }
                             } else {
                                 System.out.println("Entra Proceso " + procesos[i].getID()
                                         + ", no se ejecuta porque sigue bloqueado");
                                 totalEjecutado++;
+                                inanicion++;
+                                if(inanicion >= 5) {
+                                    salir = true;
+                                    System.out.println("La simulación murió de inanición");
+                                    break;
+                                }
                                 continue;
                             }
                             break;
@@ -1201,8 +1173,7 @@ public class AppSimulador {
                     if (tiempoMonitoreoCPU < tiempoNecesario) {
 
                         if (tiempoMonitoreoCPU == 0) {
-                            System.out
-                                    .println("Se termino el tiempo de monitorio");
+                            System.out.println("Tiempo de simulación terminado");
                             salir = true;
                             break;
                         } else {
@@ -1237,7 +1208,7 @@ public class AppSimulador {
                             break;
 
                         case 3:
-                            int nuevoEstado = (int) (Math.random() * 2);66
+                            int nuevoEstado = (int) (Math.random() * 2);
                             if (nuevoEstado == 1) {
                                 procesos[i].setEstadoActual(2);
                                 procesos[i].setEntra(true);
@@ -1257,7 +1228,7 @@ public class AppSimulador {
                                 inanicion++;
                                 if(inanicion >= 5) {
                                     salir = true;
-                                    System.out.println("La simulación murió de inanicion");
+                                    System.out.println("La simulación murió de inanición");
                                     break;
                                 }
                                 continue;
@@ -1277,23 +1248,8 @@ public class AppSimulador {
 
         } while (ProcesosPendientes && tiempoMonitoreoCPU > 0);
 
-        System.out.println("+---------------------------------------------------------------------------+");
-        System.out.println("|                   Tabla de control de procesos (PCB)                      |");
-        System.out.println("+---------------------------------------------------------------------------+");
-        System.out.println("|" + "\t" + "Procesos en" + "\t" + "Tiempo restante  " + "\t" + "Estado actual" + "\t"
-                + "Prioridad" + "   |");
-        System.out.println(
-                "|" + "\t" + " ejecución " + "\t  " + "de ejecución                                   " + "   |");
-        System.out.println("+---------------------------------------------------------------------------+");
+        ImprimirPCB(procesos);
 
-        for (int i = 0; i < procesos.length; i++) {
-
-            System.out.println(
-                    "|" + "\t" + "    " + procesos[i].getID() + "\t" + "\t" + "\t" + procesos[i].getTiempoRestante()
-                            + "\t" + "\t" + "     " + procesos[i].getEstadoActual() + "\t" + "\t" + "    "
-                            + procesos[i].getPrioridad() + "       |");
-
-        }
         System.out.println("+---------------------------------------------------------------------------+");
 
         InformeFinal(procesos, totalEjecutado);
@@ -1317,7 +1273,7 @@ public class AppSimulador {
         if (!existe)
             System.out.print(" Ninguno");
 
-        System.out.print("\n" + "Procesos que nunca entraron en ejecucion:");
+        System.out.print("\n" + "Procesos que nunca entraron en ejecución:");
 
         existe = false;
         for (int i = 0; i < procesos.length; i++) {
@@ -1344,59 +1300,6 @@ public class AppSimulador {
 
         System.out.print("\n" + "Cantidad de cambios de procesos: ");
         System.out.println(totalEjecutado);
-
-    }
-
-    private static void mostrarInformeProcesos(Proceso[] procesos, int cantCambios, int[] contUnidades,
-            int tiempoMonitoreoCPU) {
-
-        System.out.println("\n" + "Informe final de ejecucion:" + "\n");
-        System.out.print("Que procesos terminaron:");
-        int cont = 0;
-        for (int i = 0; i < procesos.length; i++) {
-            if (procesos[i] == null) {
-                System.out.print(" " + (i + 1));
-                cont++;
-            }
-        }
-        if (cont == 0) {
-            System.out.print(" ninguno.");
-        }
-        System.out.println();
-        System.out.print("Cuales no entraron nunca en ejecucion:");
-        int aux = 0;
-        for (int i = 0; i < contUnidades.length; i++) {
-            if (contUnidades[i] == 0) {
-                System.out.print(" " + (i + 1));
-                aux++;
-            }
-        }
-
-        if (aux == 0) {
-            System.out.print(" ninguno.");
-        }
-        System.out.println();
-        System.out.print("Cuantos siguen en proceso:");
-        int j = 0;
-        for (int i = 0; i < procesos.length; i++) {
-            if (procesos[i] == null)
-                continue;
-            if (procesos[i].getEstadoActual() == 2 || procesos[i].getEstadoActual() == 1) {
-                System.out.print(" " + (i + 1));
-                j++;
-            }
-        }
-        if (j == 0) {
-            System.out.print(" ninguno.");
-        }
-        System.out.println();
-        System.out.println("Cantidad de cambios de procesos: " + cantCambios);
-        int totalEjecutado = 0;
-        for (int i = 0; i < contUnidades.length; i++) {
-            totalEjecutado += contUnidades[i];
-        }
-        System.out.println("Total de unidades ejecutadas: " + totalEjecutado);
-        System.out.println("Tiempo monitoreado del CPU: " + tiempoMonitoreoCPU);
 
     }
 
