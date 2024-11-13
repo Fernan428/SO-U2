@@ -2,33 +2,33 @@ package Proyecto;
 
 public class Proceso {
 
-	private int tiempoRestante;
+	private double tiempoRestante;
 	private int estadoActual;
 	private int prioridad;
 	private int ID;
 	private boolean entra;
 	private int usuario;
-	
-	public Proceso (){
-		
-	}
-	
-	public Proceso (int tiempoRestante, int estadoActual, int prioridad, int ID,boolean entra, int usuario){
 
-		this.tiempoRestante=tiempoRestante;
-		this.estadoActual=estadoActual;
-		this.prioridad=prioridad;
-		this.ID=ID;
-		this.entra=entra;
-		this.usuario=usuario;
-		
+	public Proceso() {
+
 	}
 
-	public int getTiempoRestante() {
+	public Proceso(double tiempoRestante, int estadoActual, int prioridad, int ID, boolean entra, int usuario) {
+
+		this.tiempoRestante = tiempoRestante;
+		this.estadoActual = estadoActual;
+		this.prioridad = prioridad;
+		this.ID = ID;
+		this.entra = entra;
+		this.usuario = usuario;
+
+	}
+
+	public double getTiempoRestante() {
 		return tiempoRestante;
 	}
 
-	public void setTiempoRestante(int tiempoRestante) {
+	public void setTiempoRestante(double tiempoRestante) {
 		this.tiempoRestante = tiempoRestante;
 	}
 
@@ -74,10 +74,8 @@ public class Proceso {
 
 	@Override
 	public String toString() {
-		return "Proceso "+ID+"[tiempoRestante=" + tiempoRestante + ", estadoActual=" + estadoActual + ", prioridad="
+		return "Proceso " + ID + "[tiempoRestante=" + tiempoRestante + ", estadoActual=" + estadoActual + ", prioridad="
 				+ prioridad + "]";
 	}
 
-	
-	
 }
